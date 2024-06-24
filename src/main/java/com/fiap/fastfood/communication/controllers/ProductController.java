@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,11 +111,11 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
     })
     @GetMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<FullProductResponse> getProductById(
+    public ResponseEntity<FullProductResponse> getProductByIdAndType(
             @PathVariable String id,
-            @RequestParam(required = true) String name
+            @RequestParam(required = true) String type
     ) throws EntityNotFoundException {
-        final var result = useCase.findByIdAndName(id, name, gateway);
+        final var result = useCase.findByIdAndType(id, type, gateway);
 
         return ResponseEntity.ok(ProductBuilder.toResponse(result));
     }

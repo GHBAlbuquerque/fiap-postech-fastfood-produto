@@ -7,8 +7,6 @@ import com.fiap.fastfood.core.entity.ProductTypeEnum;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface ProductUseCase {
 
     Product createProduct(Product product, ProductGateway productGateway);
@@ -19,5 +17,5 @@ public interface ProductUseCase {
 
     Page<Product> findProducts(@Nullable ProductTypeEnum type, Integer page, Integer size, ProductGateway productGateway);
 
-    Product findByIdAndName(String id, String name, ProductGateway productGateway) throws EntityNotFoundException;
+    Product findByIdAndType(String id, String name, ProductGateway productGateway) throws EntityNotFoundException;
 }

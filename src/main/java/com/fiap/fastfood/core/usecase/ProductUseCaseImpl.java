@@ -52,8 +52,8 @@ public class ProductUseCaseImpl implements ProductUseCase {
     }
 
     @Override
-    public Product findByIdAndName(String id, String name, ProductGateway productGateway) throws EntityNotFoundException {
-        final var product = productGateway.findById(id, name);
+    public Product findByIdAndType(String id, String name, ProductGateway productGateway) throws EntityNotFoundException {
+        final var product = productGateway.findByIdAndType(id, name);
 
         if (product == null) {
             logger.error("not found product with id = {}", id);

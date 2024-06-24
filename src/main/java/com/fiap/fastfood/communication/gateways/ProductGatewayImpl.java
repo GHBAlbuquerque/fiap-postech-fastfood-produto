@@ -45,8 +45,8 @@ public class ProductGatewayImpl implements ProductGateway {
     }
 
     @Override
-    public Product findById(String id, String name) {
-        final var optional = repository.findByIdAndName(id, name);
+    public Product findByIdAndType(String id, String type) {
+        final var optional = repository.findByIdAndType(id, type);
 
         if (optional.isPresent())
             return ProductBuilder.fromOrmToDomain(optional.get());

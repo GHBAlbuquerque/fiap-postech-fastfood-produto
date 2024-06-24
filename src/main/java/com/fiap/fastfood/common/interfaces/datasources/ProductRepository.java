@@ -16,5 +16,5 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductORM
 
     Page<ProductORM> findAllByType(String type, Pageable pageable);
 
-    Optional<ProductORM> findByIdAndName(String id, String name);
+    Optional<ProductORM> findByIdAndType(String id, String type);
 }
