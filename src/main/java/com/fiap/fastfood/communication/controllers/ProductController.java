@@ -1,9 +1,9 @@
 package com.fiap.fastfood.communication.controllers;
 
 import com.fiap.fastfood.common.builders.ProductBuilder;
-import com.fiap.fastfood.common.dto.response.BaseProductResponse;
 import com.fiap.fastfood.common.dto.request.CreateProductRequest;
 import com.fiap.fastfood.common.dto.request.UpdateProductRequest;
+import com.fiap.fastfood.common.dto.response.FullProductResponse;
 import com.fiap.fastfood.common.exceptions.custom.EntityNotFoundException;
 import com.fiap.fastfood.common.exceptions.model.ExceptionDetails;
 import com.fiap.fastfood.common.interfaces.gateways.ProductGateway;
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
     })
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<BaseProductResponse> createProduct(
+    public ResponseEntity<FullProductResponse> createProduct(
             @Valid @RequestBody CreateProductRequest request
     ) {
         final var productReq = ProductBuilder.toDomain(request);
@@ -58,7 +59,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
     })
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<BaseProductResponse> updateProduct(
+    public ResponseEntity<FullProductResponse> updateProduct(
             @PathVariable String id,
             @RequestBody UpdateProductRequest request
     ) throws EntityNotFoundException {
@@ -90,10 +91,12 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
     })
     @GetMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<List<BaseProductResponse>> findProduct(
-            @RequestParam ProductTypeEnum category
+    public ResponseEntity<List<FullProductResponse>> findProducts(
+            @RequestParam(required = false) ProductTypeEnum type,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
-        final var result = useCase.findByType(category, gateway);
+        final var result = useCase.findProducts(type, page, size, gateway);
 
         return ResponseEntity.ok(
                 result.stream().map(
@@ -109,18 +112,13 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
     })
     @GetMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<BaseProductResponse> getProductById(
-            @PathVariable String id
-    ) {
-        /*final var result = useCase.findByType(category, gateway);
+    public ResponseEntity<FullProductResponse> getProductById(
+            @PathVariable String id,
+            @RequestParam(required = true) String name
+    ) throws EntityNotFoundException {
+        final var result = useCase.findByIdAndName(id, name, gateway);
 
-        return ResponseEntity.ok(
-                result.stream().map(
-                        ProductBuilder::toResponse
-                ).collect(Collectors.toList())
-        );*/
-
-        return null;
+        return ResponseEntity.ok(ProductBuilder.toResponse(result));
     }
 
 }

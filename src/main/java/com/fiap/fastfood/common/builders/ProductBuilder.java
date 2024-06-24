@@ -3,14 +3,13 @@ package com.fiap.fastfood.common.builders;
 import com.fiap.fastfood.common.dto.request.CreateProductRequest;
 import com.fiap.fastfood.common.dto.request.UpdateProductRequest;
 import com.fiap.fastfood.common.dto.response.BaseProductResponse;
+import com.fiap.fastfood.common.dto.response.FullProductResponse;
 import com.fiap.fastfood.common.utils.TimeConverter;
 import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
 import com.fiap.fastfood.external.orm.ProductORM;
-import com.fiap.fastfood.external.orm.ProductTypeEnumORM;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class ProductBuilder {
 
@@ -22,13 +21,16 @@ public class ProductBuilder {
         return buildUpdateProductFromRequest(request, LocalDateTime.now());
     }
 
-    public static BaseProductResponse toResponse(Product product) {
-        return BaseProductResponse
+    public static FullProductResponse toResponse(Product product) {
+        return FullProductResponse
                 .builder()
+                .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
                 .type(product.getType().toString())
                 .price(product.getPrice())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
                 .build();
     }
 
@@ -60,7 +62,7 @@ public class ProductBuilder {
                 .price(orm.getPrice())
                 .description(orm.getDescription())
                 .type(ProductTypeEnum.valueOf(
-                        orm.getType().toString())
+                        orm.getType())
                 )
                 .createdAt(
                         TimeConverter.convertToLocalDateTimeViaInstant(orm.getCreatedAt())
@@ -77,9 +79,7 @@ public class ProductBuilder {
                 .name(product.getName())
                 .price(product.getPrice())
                 .description(product.getDescription())
-                .type(ProductTypeEnumORM.valueOf(
-                        product.getType().toString())
-                )
+                .type(product.getType().toString())
                 .build();
 
         if (product.getCreatedAt() != null)
@@ -97,9 +97,7 @@ public class ProductBuilder {
                 .name(orm.getName())
                 .price(orm.getPrice())
                 .description(orm.getDescription())
-                .type(ProductTypeEnumORM.valueOf(
-                        orm.getType().toString())
-                )
+                .type(orm.getType())
                 .createdAt(orm.getCreatedAt())
                 .updatedAt(orm.getUpdatedAt())
                 .build();

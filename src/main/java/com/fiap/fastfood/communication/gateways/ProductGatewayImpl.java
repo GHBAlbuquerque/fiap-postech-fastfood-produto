@@ -5,11 +5,10 @@ import com.fiap.fastfood.common.interfaces.datasources.ProductRepository;
 import com.fiap.fastfood.common.interfaces.gateways.ProductGateway;
 import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
-import com.fiap.fastfood.external.orm.ProductTypeEnumORM;
+import com.fiap.fastfood.external.orm.ProductORM;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ProductGatewayImpl implements ProductGateway {
@@ -46,11 +45,28 @@ public class ProductGatewayImpl implements ProductGateway {
     }
 
     @Override
-    public List<Product> findByType(ProductTypeEnum type) {
-        final var productType = ProductTypeEnumORM.valueOf(type.toString());
+    public Product findById(String id, String name) {
+        final var optional = repository.findByIdAndName(id, name);
 
-        final var orms = repository.findByType(productType);
+        if (optional.isPresent())
+            return ProductBuilder.fromOrmToDomain(optional.get());
 
-        return orms.stream().map(ProductBuilder::fromOrmToDomain).collect(Collectors.toList());
+        return null;
+    }
+
+    @Override
+    public Page<Product> findProducts(ProductTypeEnum type,
+                                      Integer page,
+                                      Integer size) {
+        final Page<ProductORM> orms;
+        final var pageRequest = PageRequest.of(page, size);
+
+        if (type != null) {
+            orms = repository.findAllByType(type.toString(), pageRequest);
+        } else {
+            orms = repository.findAll(pageRequest);
+        }
+
+        return orms.map(ProductBuilder::fromOrmToDomain);
     }
 }

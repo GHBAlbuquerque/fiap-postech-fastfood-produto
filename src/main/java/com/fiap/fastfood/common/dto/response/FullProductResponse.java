@@ -1,4 +1,4 @@
-package com.fiap.fastfood.common.dto.request;
+package com.fiap.fastfood.common.dto.response;
 
 import lombok.*;
 

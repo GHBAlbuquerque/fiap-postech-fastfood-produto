@@ -7,8 +7,7 @@ import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public class ProductUseCaseImpl implements ProductUseCase {
 
@@ -45,9 +44,26 @@ public class ProductUseCaseImpl implements ProductUseCase {
     }
 
     @Override
-    public List<Product> findByType(ProductTypeEnum type, ProductGateway productGateway) {
-        return productGateway.findByType(type);
+    public Page<Product> findProducts(ProductTypeEnum type,
+                                      Integer page,
+                                      Integer size,
+                                      ProductGateway productGateway) {
+        return productGateway.findProducts(type, page, size);
     }
 
+    @Override
+    public Product findByIdAndName(String id, String name, ProductGateway productGateway) throws EntityNotFoundException {
+        final var product = productGateway.findById(id, name);
+
+        if (product == null) {
+            logger.error("not found product with id = {}", id);
+            throw new EntityNotFoundException(
+                    id,
+                    "Product not found."
+            );
+        }
+
+        return product;
+    }
 
 }

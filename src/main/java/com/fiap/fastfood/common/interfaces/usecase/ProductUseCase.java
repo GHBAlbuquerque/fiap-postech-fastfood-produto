@@ -4,6 +4,8 @@ import com.fiap.fastfood.common.exceptions.custom.EntityNotFoundException;
 import com.fiap.fastfood.common.interfaces.gateways.ProductGateway;
 import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
+import jakarta.annotation.Nullable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface ProductUseCase {
 
     void deleteProduct(String id, ProductGateway productGateway);
 
-    List<Product> findByType(ProductTypeEnum type, ProductGateway productGateway);
+    Page<Product> findProducts(@Nullable ProductTypeEnum type, Integer page, Integer size, ProductGateway productGateway);
 
-
+    Product findByIdAndName(String id, String name, ProductGateway productGateway) throws EntityNotFoundException;
 }
