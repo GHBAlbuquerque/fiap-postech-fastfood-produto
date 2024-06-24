@@ -1,7 +1,7 @@
 package com.fiap.fastfood.communication.gateways;
 
 import com.fiap.fastfood.common.builders.ProductBuilder;
-import com.fiap.fastfood.common.interfaces.datasources.SpringDataMongoProductRepository;
+import com.fiap.fastfood.common.interfaces.datasources.ProductRepository;
 import com.fiap.fastfood.common.interfaces.gateways.ProductGateway;
 import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 @Component
 public class ProductGatewayImpl implements ProductGateway {
 
-    private final SpringDataMongoProductRepository repository;
+    private final ProductRepository repository;
 
-    public ProductGatewayImpl(SpringDataMongoProductRepository repository) {
+    public ProductGatewayImpl(ProductRepository repository) {
         this.repository = repository;
     }
 

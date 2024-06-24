@@ -1,7 +1,7 @@
 package com.fiap.fastfood.communication.controllers;
 
 import com.fiap.fastfood.common.builders.ProductBuilder;
-import com.fiap.fastfood.common.dto.request.BaseProductResponse;
+import com.fiap.fastfood.common.dto.response.BaseProductResponse;
 import com.fiap.fastfood.common.dto.request.CreateProductRequest;
 import com.fiap.fastfood.common.dto.request.UpdateProductRequest;
 import com.fiap.fastfood.common.exceptions.custom.EntityNotFoundException;

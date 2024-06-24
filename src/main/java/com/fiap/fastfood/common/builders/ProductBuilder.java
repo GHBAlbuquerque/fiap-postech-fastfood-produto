@@ -3,12 +3,14 @@ package com.fiap.fastfood.common.builders;
 import com.fiap.fastfood.common.dto.request.CreateProductRequest;
 import com.fiap.fastfood.common.dto.request.UpdateProductRequest;
 import com.fiap.fastfood.common.dto.response.BaseProductResponse;
+import com.fiap.fastfood.common.utils.TimeConverter;
 import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
 import com.fiap.fastfood.external.orm.ProductORM;
 import com.fiap.fastfood.external.orm.ProductTypeEnumORM;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ProductBuilder {
 
@@ -60,13 +62,17 @@ public class ProductBuilder {
                 .type(ProductTypeEnum.valueOf(
                         orm.getType().toString())
                 )
-                .createdAt(LocalDateTime.now())
-                .updatedAt(null)
+                .createdAt(
+                        TimeConverter.convertToLocalDateTimeViaInstant(orm.getCreatedAt())
+                )
+                .updatedAt(
+                        TimeConverter.convertToLocalDateTimeViaInstant(orm.getUpdatedAt())
+                )
                 .build();
     }
 
     public static ProductORM fromDomainToOrm(Product product) {
-        return ProductORM.builder()
+        final var productORM = ProductORM.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
@@ -74,9 +80,15 @@ public class ProductBuilder {
                 .type(ProductTypeEnumORM.valueOf(
                         product.getType().toString())
                 )
-                .createdAt(LocalDateTime.now())
-                .updatedAt(null)
                 .build();
+
+        if (product.getCreatedAt() != null)
+            productORM.setCreatedAt(TimeConverter.convertToDateViaInstant(product.getCreatedAt()));
+
+        if (product.getUpdatedAt() != null)
+            productORM.setUpdatedAt(TimeConverter.convertToDateViaInstant(product.getUpdatedAt()));
+
+        return productORM;
     }
 
     public static ProductORM fromORMtoNewORM(ProductORM orm) {
@@ -89,7 +101,7 @@ public class ProductBuilder {
                         orm.getType().toString())
                 )
                 .createdAt(orm.getCreatedAt())
-                .updatedAt(LocalDateTime.now())
+                .updatedAt(orm.getUpdatedAt())
                 .build();
     }
 }
