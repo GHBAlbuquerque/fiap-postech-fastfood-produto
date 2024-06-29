@@ -33,6 +33,7 @@ kind: Service
 metadata:
   name: fiap-postech-service-produto
 spec:
+  type: NodePort
   selector:
     app: fiap-postech-fastfood-produto
   ports:
