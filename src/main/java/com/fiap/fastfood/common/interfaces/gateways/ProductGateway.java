@@ -13,5 +13,5 @@ public interface ProductGateway {
 
     Product updateProduct(String id, Product product);
 
-    Product findByIdAndType(String id, String name);
+    Product findByIdAndType(String id, String type);
 }
