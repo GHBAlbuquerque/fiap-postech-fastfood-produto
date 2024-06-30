@@ -2,7 +2,6 @@ package com.fiap.fastfood.common.builders;
 
 import com.fiap.fastfood.common.dto.request.CreateProductRequest;
 import com.fiap.fastfood.common.dto.request.UpdateProductRequest;
-import com.fiap.fastfood.common.dto.response.BaseProductResponse;
 import com.fiap.fastfood.common.dto.response.FullProductResponse;
 import com.fiap.fastfood.common.utils.TimeConverter;
 import com.fiap.fastfood.core.entity.Product;

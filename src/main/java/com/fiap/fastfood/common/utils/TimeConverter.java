@@ -20,7 +20,7 @@ public class TimeConverter {
                         .toInstant());
     }
 
-    public static class LocalDateTimeConverter implements DynamoDBTypeConverter<String, LocalDateTime> {
+    /*public static class LocalDateTimeConverter implements DynamoDBTypeConverter<String, LocalDateTime> {
 
         @Override
         public String convert(final LocalDateTime time) {
@@ -33,7 +33,7 @@ public class TimeConverter {
 
             return LocalDateTime.parse(stringValue);
         }
-    }
+    }*/
 
 
 }

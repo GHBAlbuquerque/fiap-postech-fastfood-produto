@@ -1,9 +1,7 @@
 package com.fiap.fastfood.common.exceptions;
 
-import com.fiap.fastfood.common.exceptions.custom.AlreadyRegisteredException;
 import com.fiap.fastfood.common.exceptions.custom.CreateEntityException;
 import com.fiap.fastfood.common.exceptions.custom.EntityNotFoundException;
-import com.fiap.fastfood.common.exceptions.custom.IdentityProviderRegistrationException;
 import com.fiap.fastfood.common.exceptions.model.ExceptionDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,21 +17,6 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     //TODO: ADICIONAR EXCEÇÕES CUSTOMIZADAS QUE FOREM FEITAS
 
-
-    @ExceptionHandler(value = {AlreadyRegisteredException.class})
-    public ResponseEntity<ExceptionDetails> resourceException(AlreadyRegisteredException ex, WebRequest request) {
-
-        final var message = new ExceptionDetails(
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
-                "The request could not be completed due to a conflict.",
-                ex.getCode(),
-                ex.getMessage(),
-                HttpStatus.BAD_REQUEST.value(),
-                new Date(),
-                ex.getErrors());
-
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
     public ResponseEntity<ExceptionDetails> resourceException(EntityNotFoundException ex, WebRequest request) {
@@ -63,21 +46,6 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
                 ex.getErrors());
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(value = {IdentityProviderRegistrationException.class})
-    public ResponseEntity<ExceptionDetails> resourceException(IdentityProviderRegistrationException ex, WebRequest request) {
-
-        final var message = new ExceptionDetails(
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
-                "Error trying to register new user on Identity Provider",
-                ex.getCode(),
-                ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                new Date(),
-                ex.getErrors());
-
-        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

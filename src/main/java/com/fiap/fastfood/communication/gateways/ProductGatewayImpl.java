@@ -21,7 +21,10 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public void deleteProduct(String id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
