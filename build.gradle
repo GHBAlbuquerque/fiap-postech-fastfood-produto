@@ -43,6 +43,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.4.0'
 }
 
 tasks.named('test') {
