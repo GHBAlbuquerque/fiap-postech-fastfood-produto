@@ -1,7 +1,6 @@
-package communication.gateways;
+package com.fiap.fastfood.communication.gateways;
 
 import com.fiap.fastfood.common.interfaces.datasources.ProductRepository;
-import com.fiap.fastfood.communication.gateways.ProductGatewayImpl;
 import com.fiap.fastfood.core.entity.Product;
 import com.fiap.fastfood.core.entity.ProductTypeEnum;
 import com.fiap.fastfood.external.orm.ProductORM;

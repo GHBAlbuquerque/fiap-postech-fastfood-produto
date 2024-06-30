@@ -1,6 +1,5 @@
-package common.beans;
+package com.fiap.fastfood.common.beans;
 
-import com.fiap.fastfood.common.beans.GatewayBeanDeclaration;
 import com.fiap.fastfood.common.interfaces.datasources.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
