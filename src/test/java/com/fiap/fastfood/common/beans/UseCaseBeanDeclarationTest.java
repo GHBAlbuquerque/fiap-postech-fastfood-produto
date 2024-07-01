@@ -13,7 +13,7 @@ public class UseCaseBeanDeclarationTest {
     private UseCaseBeanDeclaration declaration;
 
     @Test
-    void productGatewayTest() {
+    void productUseCaseTest() {
         final var result = declaration.productUseCase();
 
         Assertions.assertNotNull(result);
