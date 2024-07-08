@@ -13,7 +13,7 @@ public class AWSDynamoBeanDeclaration {
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
         return AmazonDynamoDBClient.builder()
-                .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                 .withRegion(String.valueOf(Region.US_EAST_1))
                 .build();
     }
