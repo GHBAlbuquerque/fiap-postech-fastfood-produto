@@ -33,13 +33,14 @@ kind: Service
 metadata:
   name: fiap-postech-service-produto
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: fiap-postech-fastfood-produto
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
+      nodePort: 30008
 
 
 
