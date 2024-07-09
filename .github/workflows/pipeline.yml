@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Run tests
+      - name: Run Tests
         run: |
           chmod +x ./gradlew
           ./gradlew test
@@ -31,11 +31,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
+      - name: Run Coverage
+        run: |
+          chmod +x gradlew
+          ./gradlew testCoverage
+
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v2
         with:
           name: jacoco-report
-          path: build/reports/jacoco/test/html/
+          path: build/reports/jacoco/test/html/**
 
   build:
     name: build
@@ -95,11 +100,15 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.commit.outputs.short }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f Dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
 
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
