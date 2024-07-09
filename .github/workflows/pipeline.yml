@@ -7,6 +7,9 @@ on:
 env:
   ECR_REPOSITORY: fiap_postech_fastfood_produto
   EKS_CLUSTER_NAME: eks_cluster_fiap_postech
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 jobs:
   unit-test:
@@ -26,19 +29,11 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew test
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Run Coverage
         run: |
           chmod +x gradlew
           ./gradlew jacocoTestReport
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v2
@@ -65,10 +60,6 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew build
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Display structure of downloaded files
         run: ls -R
@@ -103,13 +94,10 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.commit.outputs.short }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile . -e AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=AWS_SESSION_TOKEN
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile . --env AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY --env AWS_SESSION_TOKEN=AWS_SESSION_TOKEN
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f Dockerfile . -e AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=AWS_SESSION_TOKEN
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f Dockerfile . --env AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY --env AWS_SESSION_TOKEN=AWS_SESSION_TOKEN
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
 
