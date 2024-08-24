@@ -2,6 +2,7 @@ package com.fiap.fastfood.common.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,8 +15,9 @@ public class SecConfig {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/actuator/**").permitAll()
-                .anyRequest().permitAll());
+                        .requestMatchers("/actuator/**").permitAll()
+                        .anyRequest().permitAll())
+                .anonymous(Customizer.withDefaults());
 
         return http.build();
     }
