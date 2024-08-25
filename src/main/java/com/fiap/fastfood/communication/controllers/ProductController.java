@@ -89,7 +89,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class))),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
     })
-    @GetMapping(produces = "application/json", consumes = "application/json")
+    @GetMapping(produces = "application/json"/*, consumes = "application/json"*/)
     public ResponseEntity<List<FullProductResponse>> findProducts(
             @RequestParam(required = false) ProductTypeEnum type,
             @RequestParam(required = false, defaultValue = "0") Integer page,
